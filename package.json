@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm server.js",
     "dev": "nodemon server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
