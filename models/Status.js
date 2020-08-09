@@ -9,6 +9,14 @@ const statusSchema = new Schema(
     in_reply_to_status_id: {
       type: Schema.Types.ObjectId,
     },
+    is_repost: {
+      type: Boolean,
+      default: false,
+    },
+    repost_status_id: {
+      type: Schema.Types.ObjectId,
+      required: false,
+    },
     in_reply_to_user_id: {
       type: Schema.Types.ObjectId,
     },

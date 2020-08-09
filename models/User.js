@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const Schema = mongoose.Schema;
 
@@ -42,7 +43,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    varified: {
+    verified: {
       type: Boolean,
       default: false,
     },
@@ -58,5 +59,27 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+
+userSchema.virtual("statuses", {
+  ref: "Statuses",
+  localField: "_id",
+  foreignField: "user",
+});
+
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+  delete userObject.password;
+  delete userObject.email;
+  return userObject;
+};
+
+// Delete user tasks when user is removed
+
+userSchema.pre("remove", async function (next) {
+  const user = this;
+  await Statuses.deleteMany({ user: user.id });
+  next();
+});
 
 module.exports = User = mongoose.model("User", userSchema);
